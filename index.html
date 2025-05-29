@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +8,39 @@
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      display: flex;
       max-width: 900px;
       margin: 2rem auto;
       padding: 0 1rem;
       color: #333;
       line-height: 1.6;
+      display: block;
     }
+
+    header.page-header {
+      margin-bottom: 2rem;
+    }
+
+    header.page-header > h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    header.page-header > p {
+      margin-top: 0;
+      color: #555;
+      font-style: italic;
+    }
+
+    header.page-header p.authors,
+    header.page-header p.date {
+      font-weight: 600;
+      margin: 0.1rem 0;
+    }
+
+    .layout {
+      display: flex;
+    }
+
     nav.toc {
       flex: 0 0 220px;
       position: sticky;
@@ -25,96 +50,149 @@
       height: calc(100vh - 4rem);
       overflow-y: auto;
     }
+
     nav.toc h3 {
       font-weight: 700;
       margin-bottom: 1rem;
     }
+
     nav.toc ul {
       list-style: none;
       padding-left: 0;
       margin: 0;
     }
+
     nav.toc li {
       margin-bottom: 0.5rem;
     }
+
     nav.toc a {
       text-decoration: none;
       color: #111;
       font-weight: 600;
       cursor: pointer;
     }
+
     nav.toc a:hover {
       text-decoration: underline;
       color: #0077cc;
     }
+
     main.content {
       flex: 1 1 auto;
       padding-left: 2rem;
       max-width: 100%;
     }
-    header > h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.3rem;
-    }
-    header > p {
-      margin-top: 0;
-      color: #555;
-      font-style: italic;
-    }
-    header p.authors, header p.date {
-      font-weight: 600;
-      margin: 0.1rem 0;
-    }
+
     section {
       margin-top: 3rem;
     }
+
     section > h2 {
       font-size: 1.8rem;
       border-bottom: 2px solid #ddd;
       padding-bottom: 0.3rem;
       margin-bottom: 1rem;
     }
+
     figure {
       text-align: center;
       margin: 2rem 0;
     }
+
     figcaption {
       font-size: 0.9rem;
       color: #666;
       margin-top: 0.3rem;
     }
+
     code {
       background-color: #f4f4f4;
       padding: 0.2rem 0.4rem;
       border-radius: 3px;
       font-family: monospace;
     }
+
     pre code {
       display: block;
       padding: 1rem;
       overflow-x: auto;
     }
+
     sup a {
       text-decoration: none;
       color: #777;
       font-size: 0.7rem;
     }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 2rem 0;
+    }
+
+    .author-metadata {
+      margin: 2rem 0;
+    }
+    
+    .author-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    
+    .author-grid > div {
+      flex: 1;
+    }
   </style>
 </head>
 <body>
-<nav class="toc" aria-label="Table of Contents">
-<h3>Contents</h3>
-<ul>
-<li><a href="#}">  }</a></li>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#motivation">Motivation</a></li>
-<li><a href="#background">Background</a></li>
-<li><a href="#the-role-of-batch-size-in-lora-training">The Role of Batch Size in LoRA Training</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
-<li><a href="#apendix?">Apendix..?</a></li>
-</ul>
-</nav>
-<main class="content">
+
+  <!-- Title and Author Info -->
+  <header class="page-header">
+    <h1>The Effect of Batch Size in LoRA Training</h1>
+    <p>Exploring how batch size impacts LoRA-based fine-tuning for LLMs.</p>
+    <hr>
+    <section class="author-metadata">
+      <div class="author-grid">
+        <div>
+          <strong>AUTHORS</strong><br/>
+          Sangyoon Lee<br/>
+          Minhee Lee<br/>
+          Jiyun Bae
+        </div>
+        <div>
+          <strong>AFFILIATIONS</strong><br/>
+          Postech GSAI<br/>
+          Postech GSAI<br/>
+          Postech GSAI
+        </div>
+        <div>
+          <strong>PUBLISHED</strong><br/>
+          May 29, 2025
+        </div>
+      </div>
+    </section>
+    </header>
+  <hr/>
+  <!-- Flex Container: TOC + Content -->
+  <div class="layout">
+    <nav class="toc" aria-label="Table of Contents">
+      <h3>Contents</h3>
+      <ul>
+        <li><a href="#}">}</a></li>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#motivation">Motivation</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#the-role-of-batch-size-in-lora-training">The Role of Batch Size in LoRA Training</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#apendix?">Apendix..?</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
   <header>
     <h1>The Effect of Batch Size in LoRA Training</h1>
     <p>Exploring how batch size impacts LoRA-based fine-tuning for LLMs.</p>
@@ -122,13 +200,7 @@
     <p class="date"><strong>Published:</strong> May 29, 2025</p>
   </header>
   <hr/>
-<p>layout: distill
-title: The Effect of Batch Size in LoRA Training.
-description: TODO.</p>
-<p>date: 2025-05-29
-future: true
-htmlwidgets: true
-hidden: false</p>
+
 <h1>Anonymize when submitting</h1>
 <p>authors:
   - name: Sangyoon Lee
@@ -136,6 +208,7 @@ hidden: false</p>
     affiliations:
       name: Postech GSAI</p>
 <h1>must be the exact same name as your blogpost</h1>
+<hr/>
 <p>bibliography: overview.bib  </p>
 <h1>Add a table of contents to your post.</h1>
 <h1>- make sure that TOC names match the actual section names</h1>
@@ -202,7 +275,7 @@ Fine tuning 상황</p>
 <p>Figure X. test accuracy for same epoch</p>
 <p>Figure Y. test accruacy for same steps</p>
 <h2 id="conclusion">Conclusion</h2>
-<h2 id="apendix?">Apendix..?</h2>
+<h2 id="apendix?">Apendix</h2>
 
 </main>
 </body>
