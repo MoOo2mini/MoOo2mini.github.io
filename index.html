@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sample Blog Post</title>
+  <meta name="description" content="Your blog post's abstract. Please add your abstract or summary here and not in the main body of your text. Do not include math/latex or hyperlinks." />
+  <style>
+    /* 기본 레이아웃 */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      color: #333;
+      line-height: 1.6;
+    }
+    /* 목차 영역 */
+    nav.toc {
+      flex: 0 0 220px;
+      position: sticky;
+      top: 2rem;
+      padding-right: 1rem;
+      border-right: 1px solid #ddd;
+      height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+    nav.toc h3 {
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    nav.toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    nav.toc li {
+      margin-bottom: 0.5rem;
+    }
+    nav.toc a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    nav.toc a:hover {
+      text-decoration: underline;
+      color: #0077cc;
+    }
+
+    /* 본문 영역 */
+    main.content {
+      flex: 1 1 auto;
+      padding-left: 2rem;
+      max-width: 100%;
+    }
+    header > h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.3rem;
+    }
+    header > p {
+      margin-top: 0;
+      color: #555;
+      font-style: italic;
+    }
+    header p.authors, header p.date {
+      font-weight: 600;
+      margin: 0.1rem 0;
+    }
+    section {
+      margin-top: 3rem;
+    }
+    section > h2 {
+      font-size: 1.8rem;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    figure {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    figcaption {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    pre code {
+      display: block;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    sup a {
+      text-decoration: none;
+      color: #777;
+      font-size: 0.7rem;
+    }
+  </style>
+  <!-- MathJax 3 for math rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+
+<nav class="toc" aria-label="Table of Contents">
+  <h3>Contents</h3>
+  <ul>
+    <li><a href="#equations">Equations</a></li>
+    <li><a href="#images-figures">Images and Figures</a></li>
+    <li><a href="#citations">Citations</a></li>
+    <li><a href="#footnotes">Footnotes</a></li>
+    <li><a href="#code-blocks">Code Blocks</a></li>
+  </ul>
+</nav>
+
+<main class="content">
+  <header>
+    <h1>Sample Blog Post</h1>
+    <p>Your blog post's abstract. Please add your abstract or summary here and not in the main body of your text. Do not include math/latex or hyperlinks.</p>
+    <p class="authors"><strong>Authors:</strong> Albert Einstein (IAS, Princeton), Boris Podolsky (IAS, Princeton), Nathan Rosen (IAS, Princeton)</p>
+    <p class="date"><strong>Published:</strong> April 28, 2025</p>
+  </header>
+
+  <section id="equations" tabindex="-1">
+    <h2>Equations</h2>
+    <p>This theme supports rendering beautiful math in inline and display modes using MathJax 3 engine. You just need to surround your math expression with <code>$$</code>, like</p>
+    <p style="font-style: italic; font-size: 1.4rem;">$$ E = mc^2 $$</p>
+    <p>If you leave it inside a paragraph, it will produce an inline expression, just like \(E = mc^2\).</p>
+    <p>To use display mode, again surround your expression with <code>$$</code> and place it as a separate paragraph.</p>
+  </section>
+
+  <section id="images-figures" tabindex="-1">
+    <h2>Images and Figures</h2>
+    <p>You can include images like this:</p>
+    <figure>
+      <img src="path/to/image.png" alt="Sample figure" style="max-width: 100%; height: auto;" />
+      <figcaption><strong>Figure 1:</strong> Caption describing the image.</figcaption>
+    </figure>
+  </section>
+
+  <section id="citations" tabindex="-1">
+    <h2>Citations</h2>
+    <p>You can cite works using the <code>@</code> syntax like this <code>[@einstein1905]</code>.</p>
+  </section>
+
+  <section id="footnotes" tabindex="-1">
+    <h2>Footnotes</h2>
+    <p>This is a sentence with a footnote.<sup><a href="#footnote1" id="ref1">1</a></sup></p>
+    <footer>
+      <p id="footnote1"><sup>1</sup> This is the footnote content.</p>
+    </footer>
+  </section>
+
+  <section id="code-blocks" tabindex="-1">
+    <h2>Code Blocks</h2>
+    <pre><code># Example code
+summary(cars)
+    </code></pre>
+  </section>
+
+</main>
+
+</body>
+</html>
