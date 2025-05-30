@@ -315,8 +315,15 @@ Therefore, finding the optimal batch size is key to balancing the trade-off betw
   </p>
 </p>
 
-
-
+<h3>Batch Size Sensitivity and Performance Variability</h3>
+<figure style="text-align: center;">
+  <img src="asset/img/figure2.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA" style="max-width: 100%; height: auto;" />
+  <figcaption style="font-style: italic; margin-top: 8px;">
+    Figure 2. Test accuracy of LoRA on MATH (left) and GSM8K (right) across batch sizes ranging from 4 to 512. The observed fluctuations highlight LoRA’s sensitivity to batch size configuration. 
+  </figcaption>
+</figure>
+<p>To better understand the overall impact of batch size, we extend our analysis by evaluating LoRA across a broader range, from small to extremely large batch sizes (up to 512). Surprisingly, we observe a non-monotonic trend in test accuracy: performance initially drops, then rises unexpectedly at intermediate batch sizes. before degrading again at the largest setting.</p>
+<p>This unpredictable behavior makes it challenging to select a batch size that balances training efficiency and generalization performance. Our findings suggest that larger batch sizes do not always lead to worse performance, while they show poor performance in the very large batch. This underscores the need for a deeper understanding of how batch size interacts with optimization dynamics, and highlights the importance of careful configuration tuning in LoRA-based training pipelines.</p>
 
 <!-- reference -->
 </main>
