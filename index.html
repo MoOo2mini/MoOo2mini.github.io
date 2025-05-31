@@ -243,7 +243,7 @@
   <ul>3. We uncover oscillating trends in LoRA’s performance as batch size increases, underscoring the need for a deeper understanding of its optimization behavior.</ul>
 <!-- </ul> -->
       
-<h2 id="introduction">Introduction</h2>
+<h2 id="motivation">Motivation</h2>
 
 <figure style="text-align: center;">
   <img src="asset/img/humaneval_1epoch_motif.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA" style="max-width: 100%; height: auto;" />
@@ -278,7 +278,9 @@
   Through this lens, we aim to reveal the underappreciated role of batch size in LoRA-based training
   and provide practical guidance for future studies and real-world deployments.
 </p>
-
+<p>
+  Additional results for HumanEval and another benchmark can be found in the <a href="#appendix">Appendix</a> (see Figure 5).
+</p>
 
 <h2 id="background">Background</h2>
 <h3>General Effect of Batch Size</h3>
@@ -414,7 +416,7 @@ Importantly, these differences arise with only one epoch of training, so the fac
       </figure>
     </div>
   <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-  Figure 4. Accuracy comparison across five tasks after one-epoch fine-tuning.
+  Figure 5. Best accuracy achieved by each method on HumanEval and MBPP, with learning rate set to 2e-5.
   </figcaption>
 </figure>
 
