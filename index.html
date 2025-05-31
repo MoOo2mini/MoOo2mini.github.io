@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -22,12 +23,12 @@
       margin-bottom: 2rem;
     }
 
-    header.page-header > h1 {
+    header.page-header>h1 {
       font-size: 2.5rem;
       margin-bottom: 0.3rem;
     }
 
-    header.page-header > p {
+    header.page-header>p {
       margin-top: 0;
       color: #555;
       font-style: italic;
@@ -90,7 +91,7 @@
       margin-top: 3rem;
     }
 
-    section > h2 {
+    section>h2 {
       font-size: 1.8rem;
       border-bottom: 2px solid #ddd;
       padding-bottom: 0.3rem;
@@ -136,7 +137,7 @@
     .author-metadata {
       margin: 2rem 0;
     }
-    
+
     .author-grid {
       display: flex;
       justify-content: space-between;
@@ -144,8 +145,8 @@
       font-size: 1rem;
       line-height: 1.6;
     }
-    
-    .author-grid > div {
+
+    .author-grid>div {
       flex: 1;
     }
 
@@ -159,14 +160,16 @@
       gap: 1rem;
       scroll-behavior: smooth;
     }
+
     .horizontal-figures figure {
-      flex: 0 0 auto; 
+      flex: 0 0 auto;
       display: inline-block;
       vertical-align: bottom;
       margin: 0;
       text-align: center;
       white-space: normal;
     }
+
     .horizontal-figures img {
       max-height: 260px;
       width: auto;
@@ -175,6 +178,7 @@
       display: block;
       margin: 0 auto;
     }
+
     .horizontal-figures figcaption {
       font-size: 0.92rem;
       color: #666;
@@ -183,6 +187,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Title and Author Info -->
@@ -192,26 +197,26 @@
     <section class="author-metadata">
       <div class="author-grid">
         <div>
-          <strong>AUTHORS</strong><br/>
-          Sangyoon Lee<br/>
-          Minhee Lee<br/>
+          <strong>AUTHORS</strong><br />
+          Sangyoon Lee<br />
+          Minhee Lee<br />
           Jiyun Bae
         </div>
         <div>
-          <strong>AFFILIATIONS</strong><br/>
-          Postech GSAI<br/>
-          Postech GSAI<br/>
+          <strong>AFFILIATIONS</strong><br />
+          Postech GSAI<br />
+          Postech GSAI<br />
           Postech GSAI
         </div>
         <div>
-          <strong>PUBLISHED</strong><br/>
+          <strong>PUBLISHED</strong><br />
           May 29, 2025
         </div>
       </div>
-      
+
     </section>
-    </header>
-  <hr/>
+  </header>
+  <hr />
   <!-- Flex Container: TOC + Content -->
   <div class="layout">
     <nav class="toc" aria-label="Table of Contents">
@@ -228,220 +233,347 @@
 
     <main class="content">
 
-<h2 id="introduction">Introduction</h2>
+      <h2 id="introduction">Introduction</h2>
 
-<p><strong>Low-Rank Adaptation (LoRA)</strong> <a href="#ref1">[1]</a> has emerged as a widely adopted technique for efficiently fine-tuning large language models (LLMs). By injecting lightweight, trainable low-rank matrices into pretrained weights, LoRA offers a practical solution for adapting massive models without the full cost of end-to-end training. Despite its growing popularity, its sensitivity to training hyperparameters, especially <strong>batch size</strong>, remains underexplored. This presents a challenge in real-world scenarios, where LoRA is often used in resource-constrained environments that demand quick, reliable hyperparameter choices without exhaustive tuning.</p>
+      <p><strong>Low-Rank Adaptation (LoRA)</strong> <a href="#ref1">[1]</a> has emerged as a widely adopted technique
+        for efficiently fine-tuning large language models (LLMs). By injecting lightweight, trainable low-rank matrices
+        into pretrained weights, LoRA offers a practical solution for adapting massive models without the full cost of
+        end-to-end training. Despite its growing popularity, its sensitivity to training hyperparameters, especially
+        <strong>batch size</strong>, remains underexplored. This presents a challenge in real-world scenarios, where
+        LoRA is often used in resource-constrained environments that demand quick, reliable hyperparameter choices
+        without exhaustive tuning.
+      </p>
 
-<p>Complicating matters further, recent LoRA variants such as PiSSA <a href="#ref2"><a href="#ref2">[2]</a></a> and MiLoRA <a href="#ref3">[3]</a> propose seemingly contradictory initialization strategies (principal vs. minor singular components), yet each work reports gain based on different experimental setups. This lack of consistency makes it difficult to discern whether observed improvements stem from algorithmic advances or simply from favorable training configurations. As a result, best practices remain unclear, and the actual influence of design choices is not directly observable.</p>
+      <p>Complicating matters further, recent LoRA variants such as PiSSA <a href="#ref2"><a href="#ref2">[2]</a></a>
+        and MiLoRA <a href="#ref3">[3]</a> propose seemingly contradictory initialization strategies (principal vs.
+        minor singular components), yet each work reports gain based on different experimental setups. This lack of
+        consistency makes it difficult to discern whether observed improvements stem from algorithmic advances or simply
+        from favorable training configurations. As a result, best practices remain unclear, and the actual influence of
+        design choices is not directly observable.</p>
 
-<p>In this post, we explore <strong>how batch size influences the training of LoRA-based methods</strong>.</p>
+      <p>In this post, we explore <strong>how batch size influences the training of LoRA-based methods</strong>.</p>
 
-<p><strong>Our main contributions are as follows:</strong></p>
-<!-- <ul> -->
-  <ul>1. We show that batch size plays a critical role in LoRA fine-tuning, with up to 20% variation in test accuracy depending on its setting.</ul>
-  <ul>2. We demonstrate that vanilla LoRA can match or even outperform recent variants, simply by tuning the batch size appropriately.</ul>
-  <ul>3. We uncover oscillating trends in LoRA’s performance as batch size increases, underscoring the need for a deeper understanding of its optimization behavior.</ul>
-<!-- </ul> -->
-      
-<h2 id="motivation">Motivation</h2>
+      <p><strong>Our main contributions are as follows:</strong></p>
+      <!-- <ul> -->
+      <ul>1. We show that batch size plays a critical role in LoRA fine-tuning, with up to 20% variation in test
+        accuracy depending on its setting.</ul>
+      <ul>2. We demonstrate that vanilla LoRA can match or even outperform recent variants, simply by tuning the batch
+        size appropriately.</ul>
+      <ul>3. We uncover oscillating trends in LoRA’s performance as batch size increases, underscoring the need for a
+        deeper understanding of its optimization behavior.</ul>
+      <!-- </ul> -->
 
-<figure style="text-align: center;">
-  <img src="asset/img/humaneval_1epoch_motif.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA" style="max-width: 100%; height: auto;" />
-  <figcaption style="font-style: italic; margin-top: 8px;">
-    Figure 1. We show the HumanEval accuracy achieved by Llama-2-7B after one-epoch CodeFeedback fine-tuning with two LoRA variants (PiSSA, MiLoRA). The large-batch setting favors PiSSA, but merely reducing batch size lets MiLoRA surpass it, underscoring how sensitive LoRA comparisons are to seemingly minor choices such as batch size.
-  </figcaption>
-</figure>
+      <h2 id="introduction">Introduction</h2>
 
-<p>
-  We fine-tune
-  <a href="https://huggingface.co/meta-llama/Llama-2-7b-hf">Llama-2-7B</a>
-  using LoRA’s recent variants, PiSSA and MiLoRA, following the hyperparameter configuration proposed by Meng et al. <a href="#ref2">[2]</a>.
-  As shown in Figure 1, we evaluate their test accuracy on the HumanEval benchmark after a single epoch of training on the CodeFeedback dataset.
-  While the original configuration favors PiSSA, we find that MiLoRA outperforms by simply reducing the batch size, without any modification.
-</p>
-
-<p>
-  This result highlights a key insight: training effectiveness in LoRA-based methods is highly sensitive to configuration choices, particularly batch size.
-  Yet, these factors are often overlooked in comparative studies.
-</p>
-
-<p>
-  To demystify the impact of batch size, we focus on the following two key questions:
-</p>
-
-<p>
-  1. How does batch size affect the LoRA training dynamics?<br>
-  2. How can we choose a batch size that balances performance and efficiency?
-</p>
-
-<p>
-  Through this lens, we aim to reveal the underappreciated role of batch size in LoRA-based training
-  and provide practical guidance for future studies and real-world deployments.
-</p>
-<p>
-  Additional results for HumanEval and another benchmark can be found in the <a href="#appendix">Appendix</a> (see Figure 5).
-</p>
-
-<h2 id="background">Background</h2>
-<h3>General Effect of Batch Size</h3>
-<p>
-In traditional mini-batch stochastic gradient descent (SGD), batch size plays a critical role in the trade-off between training speed, model generalization, and computational efficiency.
-</p>
-
-<p>
-Smaller batches tend to provide noisier but more frequent gradient updates. This noise acts as a form of regularization, allowing it to explore the loss landscape more robustly and avoid over-fitting to the training data. Despite each step being based on fewer examples, frequent updates, potentially leading to faster convergence in terms of epochs. However, increasing the number of update steps results in longer overall training time in terms of wall-clock duration.
-</p>
-
-<p>
-Larger batches provide more stable and accurate gradients by aggregating more information per update, which typically leads to fewer steps for convergence. Each gradient update becomes closer to the true direction of descent for the data distribution, allowing the model to make more optimal progress with each step. However, larger batches often require proportionally higher learning rates to maintain step size. Moreover, very large batches, approaching full-batch gradient descent, are known to risk converging to sharper minima in the loss landscape, which generalize poorly to unseen data. This phenomenon has been observed empirically by <a href="#ref4">Keskar et al. [4]</a>, with significant performance drops up to a 5% lower test accuracy when using excessively large batches.
-</p>
-
-<p>
-Finding the optimal batch size is key to balancing the trade-off between computational efficiency and generalization. This has prompted extensive research <a href="#ref5">[5]</a>, <a href="#ref6">[6]</a>, <a href="#ref7">[7]</a> within the particularly regarding the scaling of batch sizes and their effects on training dynamics. A critical element of this research is the concept of <strong>Critical Batch Size (CBS)</strong>, defined as the batch size beyond which increasing it no longer significantly reduces the number of training steps. This area of study is critical because choosing the appropriate batch size can significantly impact both the speed of training and the final performance of the model. This has motivated ongoing research into principled strategies for batch size selection and optimization.
-</p>
-
-
-<h3>The Overlooked Role of Batch Size in LoRA-Based Fine-Tuning</h3>
-<p><strong>LoRA (Low-Rank Adaptation)</strong> is one of the most practical methods for fine-tuning large language models. Its efficiency has led to a surge of LoRA variants, each proposing different ways to improve adaptation quality.</p>
-
-<p><strong>PiSSA (Principal Singular Vector Adaptation)</strong> <a href="#ref2">[2]</a> initializes the LoRA adapters using the principal components of the pretrained weight matrix, those directions with the highest variance, allowing the model to immediately fine-tune in the most informative subspace.</p>
-
-<p>In contrast, <strong>MiLoRA (Minor LoRA)</strong> <a href="#ref3">[3]</a> leverages the minor singular components, encouraging the LoRA updates to adapt in underutilized directions and thus preserving pretrained knowledge.</p>
-
-<p>While both methods propose fundamentally opposite strategies for initialization, they report strong empirical results in their works, as they operate under different training settings, making direct comparison challenging.</p>
-
-<p>This issue is especially critical because LoRA is commonly deployed in <strong>resource-constrained environments</strong>, where exhaustive tuning is impractical. Moreover, fine-tuning typically occurs in <strong>low-data</strong> regimes, further amplifying the importance of choosing appropriate setups under limited training steps or memory budget.</p>
-
-<p>While prior studies <a href="#ref12">[12]</a><a href="#ref13">[13]</a> have explored the effect of some other parameters(e.g. rank, scaling factor), <strong>the role of batch size in LoRA-based training remains largely under-investigated</strong>. In this post, we aim to fill that gap by providing a systematic analysis of how batch size impacts the performance and behavior of LoRA and its recent variants.</p>
-
-
-<h2 id="the-role-of-batch-size-in-lora-training">The Role of Batch Size in LoRA Training</h2>
-<p>
-  For all experiments, we adopt <a href="https://huggingface.co/meta-llama/Llama-2-7b-hf">Llama-2-7B</a> as the backbone for fine-tuning across a diverse set of natural language understanding (NLU) downstream tasks:
-</p>
-<ul>
-  <li><strong>GSM8K</strong>: A benchmark for grade-school level mathematical reasoning and arithmetic problems.</li>
-  <li><strong>MATH</strong>: A challenging dataset focused on high school and competition-level math problems.</li>
-  <li><strong>HumanEval</strong>: A code generation benchmark where the model is asked to complete Python functions.</li>
-  <li><strong>MBPP</strong>: A dataset for Python function generation based on simple problem descriptions.</li>
-  <li><strong>MT-Bench</strong>: A multi-turn instruction-following evaluation, automatically scored using <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-0-flash">Gemini</a>.</li>
-</ul>
-
-<p>
-  To examine the impact of batch size, we evaluate LoRA and its variants across a range of values 
-  <span class="math">\( \{2^2, 2^3, 2^4, 2^5, 2^7\} \)</span>. 
-  The results of Figure 1 may be misleading, since the learning rate is a critical co-factor, especially when batch size is modified. Therefore,
-</p>
-
-<p>
-  To understand the actual effect of batch size, we conduct a small grid search for the optimal learning rate for each batch size, selecting from 
-  <span class="math">\( \{1e\text{-}3, 3e\text{-}4, 5e\text{-}5, 2e\text{-}5, 5e\text{-}6, 1e\text{-}6\} \)</span>, 
-  based on commonly used ranges in recent PEFT literature. <a href="#ref8">[8]</a>, <a href="#ref9">[9]</a>, <a href="#ref10">[10]</a>, <a href="#ref11">[11]</a>.
-</p>
-<h3>Vanilla LoRA Achieves SOTA Performance Only with The Optimal Batch Size Training.</h3>
-<figure style="text-align: center;">
-  <img src="asset/img/table1.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA" style="max-width: 100%; height: auto;" />
-  <figcaption style="font-style: italic; margin-top: 8px;">
-    Table 1. Test accuracy of LoRA, PiSSA, and MiLoRA across five tasks, with each batch size paired with an optimally tuned learning rate. “Ours” refers to the optimal batch size setup for each method. Best performances are highlighted in bold, and second-best scores are underlined.
-  </figcaption>
-</figure>
-<p>In Table 1, we compare the test performance of LoRA and its recent variants, PiSSA and MiLoRA, across a range of batch sizes, each paired with an optimally tuned learning rate. We observe that batch size has a substantial impact on LoRA based methods, with accuracy fluctuations of 20% on the GSM8K task. Notably, when the batch size is properly configured, vanilla LoRA matches or even outperforms other complex methods.
-</p>
-
-  <p>This suggests that the performance gap previously attributed to architectural improvements may, in part, stem from suboptimal training configurations. Our findings highlight that standard LoRA, without any structural changes, remains a strong baseline, so long as traditional hyperparameters like batch size and learning rate are carefully tuned. 
-  </p>
-</p>
-
-<h3>Oscillating Trends in LoRA’s Performance Appear as Batch Size Increases.</h3>
-<figure style="text-align: center;">
-  <img src="asset/img/figure2.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA" style="max-width: 100%; height: auto;" />
-  <figcaption style="font-style: italic; margin-top: 8px;">
-    Figure 2. Test accuracy of LoRA on MATH (left) and GSM8K (right) across batch sizes ranging from 4 to 512. The observed fluctuations highlight LoRA’s sensitivity to batch size configuration. 
-  </figcaption>
-</figure>
-<p>To better understand the overall impact of batch size, we extend our analysis by evaluating LoRA across a broader range, from small to extremely large batch sizes (up to 512). Surprisingly, we observe a non-monotonic trend in test accuracy while increasing the batch size: performance initially drops, then rises unexpectedly at intermediate batch sizes. before degrading again at the largest setting.</p>
-<p>This unpredictable behavior makes it challenging to select the batch size that balances training efficiency and generalization performance. While they show poor performance in the very large batch, our findings suggest that larger batch sizes do not always lead to worse performance. This underscores the need for a deeper understanding of how batch size interacts with optimization dynamics, and highlights the importance of careful configuration tuning in LoRA-based training pipelines.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>In this study, we revisit the performance of LoRA and its recent variants using the LLaMA-2-7B model, with a particular focus on the overlooked role of batch size. Our findings reveal two key insights:</p>
-<p><strong>First</strong>, when the batch size is properly tuned, vanilla LoRA can achieve performance on par with, or even better than, its variants, without requiring any structural modifications. <strong>Second</strong>, we observe that the relationship between batch size and test performance is non-monotonic: performance increases at intermediate batch sizes but drops at larger ones, forming a nonlinear pattern that defies standard assumptions. These observations highlight the importance of carefully controlling for hyperparameter configurations when evaluating new parameter-efficient fine-tuning (PEFT) methods. Without such control, reported improvements may reflect differences in tuning rather than actual algorithmic gains.
-</p>
-<p>Finally, the unexpected fluctuations in performance across batch sizes suggest subtle dynamics in optimization, which requires further theoretical investigation and large-scale empirical validation. We hope this work encourages the community to revisit current evaluation practices and adopt more rigorous, configuration-aware comparisons when assessing PEFT techniques.
-</p>
-
-<h2 id="appendix">Appendix</h2>
-<h3>Impact of Batch Size on Accuracy in PEFT Methods</h3>
-
-<figure class="horizontal-figure-wrapper">
-    <div class="horizontal-figures">
-      <figure>
-        <img src="asset/img/ALL_MT-Bench_1epoch_LARGE.png" alt="MT-BENCH" />
+      <figure style="text-align: center;">
+        <img src="asset/img/humaneval_1epoch_motif.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA"
+          style="max-width: 100%; height: auto;" />
+        <figcaption style="font-style: italic; margin-top: 8px;">
+          Figure 1. We show the HumanEval accuracy achieved by Llama-2-7B after one-epoch CodeFeedback fine-tuning with
+          two LoRA variants (PiSSA, MiLoRA). The large-batch setting favors PiSSA, but merely reducing batch size lets
+          MiLoRA surpass it, underscoring how sensitive LoRA comparisons are to seemingly minor choices such as batch
+          size.
+        </figcaption>
       </figure>
-      <figure>
-        <img src="asset/img/ALL_MBPP_1epoch_LARGE.png" alt="MBPP" />
-      </figure>
-      <figure>
-        <img src="asset/img/ALL_MATH_1epoch_LARGE.png" alt="MATH" />
-      </figure>
-      <figure>
-        <img src="asset/img/ALL_HumanEval_1epoch_LARGE.png" alt="HUMANEVAL" />
-      </figure>
-      <figure>
-        <img src="asset/img/ALL_GSM8K_1epoch_LARGE.png" alt="GSM8K" />
-      </figure>
-    </div>
-  <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-  Figure 3. Accuracy comparison across five tasks after one-epoch fine-tuning.
-  </figcaption>
-</figure>
-<p>
-  The batch-size sweep curves for all five tasks show clear accuracy variations across batch settings, even after we fixed the best learning rate for each case. 
-</p>
-<p>
-For example, MiLoRA’s GSM8K and MATH plots exhibit very large swings in peak accuracy as batch size changes, whereas PiSSA and LoRA curves fluctuate more mildly. MBPP and MT-Bench also exhibit noticeable sensitivity to batch size, while HumanEval’s accuracy curve appears broadly irregular with no consistent trend.
-</p>
-<p>
-Importantly, these differences arise with only one epoch of training, so the fact that accuracy can change by several percentage points suggests batch size itself is exerting a strong effect on model performance. In sum, the magnitude of the observed accuracy shifts supports the claim that <strong>batch size significantly impacts model behavior, independent of learning rate tuning.</strong>
-</p>
 
-<h3></h3>
-<figure class="horizontal-figure-wrapper">
-    <div class="horizontal-figures">
-      <figure>
-        <img src="asset/img/Best_Accuracy_HumanEval_lr2e-5.png" alt="MT-BENCH" />
-      </figure>
-      <figure>
-        <img src="asset/img/Best_Accuracy_MBPP_lr2e-5.png" alt="MBPP" />
-      </figure>
-    </div>
-  <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-  Figure 5. Best accuracy achieved by each method on HumanEval and MBPP, with learning rate set to 2e-5.
-  </figcaption>
-</figure>
+      <p>
+        We fine-tune
+        <a href="https://huggingface.co/meta-llama/Llama-2-7b-hf">Llama-2-7B</a>
+        using LoRA’s recent variants, PiSSA and MiLoRA, following the hyperparameter configuration proposed by Meng et
+        al. <a href="#ref2">[2]</a>.
+        As shown in Figure 1, we evaluate their test accuracy on the HumanEval benchmark after a single epoch of
+        training on the CodeFeedback dataset.
+        While the original configuration favors PiSSA, we find that MiLoRA outperforms by simply reducing the batch
+        size, without any modification.
+      </p>
 
-<!-- reference -->
-</main>
+      <p>
+        This result highlights a key insight: training effectiveness in LoRA-based methods is highly sensitive to
+        configuration choices, particularly batch size.
+        Yet, these factors are often overlooked in comparative studies.
+      </p>
+
+      <p>
+        To demystify the impact of batch size, we focus on the following two key questions:
+      </p>
+
+      <p>
+        1. How does batch size affect the LoRA training dynamics?<br>
+        2. How can we choose a batch size that balances performance and efficiency?
+      </p>
+
+      <p>
+        Through this lens, we aim to reveal the underappreciated role of batch size in LoRA-based training
+        and provide practical guidance for future studies and real-world deployments.
+      </p>
+
+
+      <h2 id="background">Background</h2>
+      <h3>General Effect of Batch Size</h3>
+      <p>
+        In traditional mini-batch stochastic gradient descent (SGD), batch size plays a critical role in the trade-off
+        between training speed, model generalization, and computational efficiency.
+      </p>
+
+      <p>
+        Smaller batches tend to provide noisier but more frequent gradient updates. This noise acts as a form of
+        regularization, allowing it to explore the loss landscape more robustly and avoid over-fitting to the training
+        data. Despite each step being based on fewer examples, frequent updates, potentially leading to faster
+        convergence in terms of epochs. However, increasing the number of update steps results in longer overall
+        training time in terms of wall-clock duration.
+      </p>
+
+      <p>
+        Larger batches provide more stable and accurate gradients by aggregating more information per update, which
+        typically leads to fewer steps for convergence. Each gradient update becomes closer to the true direction of
+        descent for the data distribution, allowing the model to make more optimal progress with each step. However,
+        larger batches often require proportionally higher learning rates to maintain step size. Moreover, very large
+        batches, approaching full-batch gradient descent, are known to risk converging to sharper minima in the loss
+        landscape, which generalize poorly to unseen data. This phenomenon has been observed empirically by <a
+          href="#ref4">Keskar et al. [4]</a>, with significant performance drops up to a 5% lower test accuracy when
+        using excessively large batches.
+      </p>
+
+      <p>
+        Finding the optimal batch size is key to balancing the trade-off between computational efficiency and
+        generalization. This has prompted extensive research <a href="#ref5">[5]</a>, <a href="#ref6">[6]</a>, <a
+          href="#ref7">[7]</a> within the particularly regarding the scaling of batch sizes and their effects on
+        training dynamics. A critical element of this research is the concept of <strong>Critical Batch Size
+          (CBS)</strong>, defined as the batch size beyond which increasing it no longer significantly reduces the
+        number of training steps. This area of study is critical because choosing the appropriate batch size can
+        significantly impact both the speed of training and the final performance of the model. This has motivated
+        ongoing research into principled strategies for batch size selection and optimization.
+      </p>
+
+
+      <h3>The Overlooked Role of Batch Size in LoRA-Based Fine-Tuning</h3>
+      <p><strong>LoRA (Low-Rank Adaptation)</strong> is one of the most practical methods for fine-tuning large language
+        models. Its efficiency has led to a surge of LoRA variants, each proposing different ways to improve adaptation
+        quality.</p>
+
+      <p><strong>PiSSA (Principal Singular Vector Adaptation)</strong> <a href="#ref2">[2]</a> initializes the LoRA
+        adapters using the principal components of the pretrained weight matrix, those directions with the highest
+        variance, allowing the model to immediately fine-tune in the most informative subspace.</p>
+
+      <p>In contrast, <strong>MiLoRA (Minor LoRA)</strong> <a href="#ref3">[3]</a> leverages the minor singular
+        components, encouraging the LoRA updates to adapt in underutilized directions and thus preserving pretrained
+        knowledge.</p>
+
+      <p>While both methods propose fundamentally opposite strategies for initialization, they report strong empirical
+        results in their works, as they operate under different training settings, making direct comparison challenging.
+      </p>
+
+      <p>This issue is especially critical because LoRA is commonly deployed in <strong>resource-constrained
+          environments</strong>, where exhaustive tuning is impractical. Moreover, fine-tuning typically occurs in
+        <strong>low-data</strong> regimes, further amplifying the importance of choosing appropriate setups under
+        limited training steps or memory budget.
+      </p>
+
+      <p>While prior studies <a href="#ref12">[12]</a><a href="#ref13">[13]</a> have explored the effect of some other
+        parameters(e.g. rank, scaling factor), <strong>the role of batch size in LoRA-based training remains largely
+          under-investigated</strong>. In this post, we aim to fill that gap by providing a systematic analysis of how
+        batch size impacts the performance and behavior of LoRA and its recent variants.</p>
+
+
+      <h2 id="the-role-of-batch-size-in-lora-training">The Role of Batch Size in LoRA Training</h2>
+      <p>
+        For all experiments, we adopt <a href="https://huggingface.co/meta-llama/Llama-2-7b-hf">Llama-2-7B</a> as the
+        backbone for fine-tuning across a diverse set of natural language understanding (NLU) downstream tasks:
+      </p>
+      <ul>
+        <li><strong>GSM8K</strong>: A benchmark for grade-school level mathematical reasoning and arithmetic problems.
+        </li>
+        <li><strong>MATH</strong>: A challenging dataset focused on high school and competition-level math problems.
+        </li>
+        <li><strong>HumanEval</strong>: A code generation benchmark where the model is asked to complete Python
+          functions.</li>
+        <li><strong>MBPP</strong>: A dataset for Python function generation based on simple problem descriptions.</li>
+        <li><strong>MT-Bench</strong>: A multi-turn instruction-following evaluation, automatically scored using <a
+            href="https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-0-flash">Gemini</a>.</li>
+      </ul>
+
+      <p>
+        To examine the impact of batch size, we evaluate LoRA and its variants across a range of values
+        <span class="math">\( \{2^2, 2^3, 2^4, 2^5, 2^7\} \)</span>.
+        The results of Figure 1 may be misleading, since the learning rate is a critical co-factor, especially when
+        batch size is modified. Therefore,
+      </p>
+
+      <p>
+        To understand the actual effect of batch size, we conduct a small grid search for the optimal learning rate for
+        each batch size, selecting from
+        <span class="math">\( \{1e\text{-}3, 3e\text{-}4, 5e\text{-}5, 2e\text{-}5, 5e\text{-}6, 1e\text{-}6\}
+          \)</span>,
+        based on commonly used ranges in recent PEFT literature. <a href="#ref8">[8]</a>, <a href="#ref9">[9]</a>, <a
+          href="#ref10">[10]</a>, <a href="#ref11">[11]</a>.
+      </p>
+      <h3>Vanilla LoRA Achieves SOTA Performance Only with The Optimal Batch Size Training.</h3>
+      <figure style="text-align: center;">
+        <img src="asset/img/table1.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA"
+          style="max-width: 100%; height: auto;" />
+        <figcaption style="font-style: italic; margin-top: 8px;">
+          Table 1. Test accuracy of LoRA, PiSSA, and MiLoRA across five tasks, with each batch size paired with an
+          optimally tuned learning rate. “Ours” refers to the optimal batch size setup for each method. Best
+          performances are highlighted in bold, and second-best scores are underlined.
+        </figcaption>
+      </figure>
+      <p>In Table 1, we compare the test performance of LoRA and its recent variants, PiSSA and MiLoRA, across a range
+        of batch sizes, each paired with an optimally tuned learning rate. We observe that batch size has a substantial
+        impact on LoRA based methods, with accuracy fluctuations of 20% on the GSM8K task. Notably, when the batch size
+        is properly configured, vanilla LoRA matches or even outperforms other complex methods.
+      </p>
+
+      <p>This suggests that the performance gap previously attributed to architectural improvements may, in part, stem
+        from suboptimal training configurations. Our findings highlight that standard LoRA, without any structural
+        changes, remains a strong baseline, so long as traditional hyperparameters like batch size and learning rate are
+        carefully tuned.
+      </p>
+      </p>
+
+      <h3>Oscillating Trends in LoRA’s Performance Appear as Batch Size Increases.</h3>
+      <figure style="text-align: center;">
+        <img src="asset/img/figure2.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA"
+          style="max-width: 100%; height: auto;" />
+        <figcaption style="font-style: italic; margin-top: 8px;">
+          Figure 2. Test accuracy of LoRA on MATH (left) and GSM8K (right) across batch sizes ranging from 4 to 512. The
+          observed fluctuations highlight LoRA’s sensitivity to batch size configuration.
+        </figcaption>
+      </figure>
+      <p>To better understand the overall impact of batch size, we extend our analysis by evaluating LoRA across a
+        broader range, from small to extremely large batch sizes (up to 512). Surprisingly, we observe a non-monotonic
+        trend in test accuracy while increasing the batch size: performance initially drops, then rises unexpectedly at
+        intermediate batch sizes. before degrading again at the largest setting.</p>
+      <p>This unpredictable behavior makes it challenging to select the batch size that balances training efficiency and
+        generalization performance. While they show poor performance in the very large batch, our findings suggest that
+        larger batch sizes do not always lead to worse performance. This underscores the need for a deeper understanding
+        of how batch size interacts with optimization dynamics, and highlights the importance of careful configuration
+        tuning in LoRA-based training pipelines.</p>
+
+      <h2 id="conclusion">Conclusion</h2>
+
+      <p>In this study, we revisit the performance of LoRA and its recent variants using the LLaMA-2-7B model, with a
+        particular focus on the overlooked role of batch size. Our findings reveal two key insights:</p>
+      <p><strong>First</strong>, when the batch size is properly tuned, vanilla LoRA can achieve performance on par
+        with, or even better than, its variants, without requiring any structural modifications.
+        <strong>Second</strong>, we observe that the relationship between batch size and test performance is
+        non-monotonic: performance increases at intermediate batch sizes but drops at larger ones, forming a nonlinear
+        pattern that defies standard assumptions. These observations highlight the importance of carefully controlling
+        for hyperparameter configurations when evaluating new parameter-efficient fine-tuning (PEFT) methods. Without
+        such control, reported improvements may reflect differences in tuning rather than actual algorithmic gains.
+      </p>
+      <p>Finally, the unexpected fluctuations in performance across batch sizes suggest subtle dynamics in optimization,
+        which requires further theoretical investigation and large-scale empirical validation. We hope this work
+        encourages the community to revisit current evaluation practices and adopt more rigorous, configuration-aware
+        comparisons when assessing PEFT techniques.
+      </p>
+
+      <h2 id="appendix">Appendix</h2>
+      <h3>Impact of Batch Size on Accuracy in PEFT Methods</h3>
+
+      <figure class="horizontal-figure-wrapper">
+        <div class="horizontal-figures">
+          <figure>
+            <img src="asset/img/ALL_MT-Bench_1epoch_LARGE.png" alt="MT-BENCH" />
+          </figure>
+          <figure>
+            <img src="asset/img/ALL_MBPP_1epoch_LARGE.png" alt="MBPP" />
+          </figure>
+          <figure>
+            <img src="asset/img/ALL_MATH_1epoch_LARGE.png" alt="MATH" />
+          </figure>
+          <figure>
+            <img src="asset/img/ALL_HumanEval_1epoch_LARGE.png" alt="HUMANEVAL" />
+          </figure>
+          <figure>
+            <img src="asset/img/ALL_GSM8K_1epoch_LARGE.png" alt="GSM8K" />
+          </figure>
+        </div>
+        <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+          Figure 3. Accuracy comparison across five tasks after one-epoch fine-tuning.
+        </figcaption>
+      </figure>
+      <p>
+        The batch-size sweep curves for all five tasks show clear accuracy variations across batch settings, even after
+        we fixed the best learning rate for each case.
+      </p>
+      <p>
+        For example, MiLoRA’s GSM8K and MATH plots exhibit very large swings in peak accuracy as batch size changes,
+        whereas PiSSA and LoRA curves fluctuate more mildly. MBPP and MT-Bench also exhibit noticeable sensitivity to
+        batch size, while HumanEval’s accuracy curve appears broadly irregular with no consistent trend.
+      </p>
+      <p>
+        Importantly, these differences arise with only one epoch of training, so the fact that accuracy can change by
+        several percentage points suggests batch size itself is exerting a strong effect on model performance. In sum,
+        the magnitude of the observed accuracy shifts supports the claim that <strong>batch size significantly impacts
+          model behavior, independent of learning rate tuning.</strong>
+      </p>
+
+      <h3>Impact of Learning Rate at Fixed Batch Sizes</h3>
+      <figure class="horizontal-figure-wrapper">
+        <div class="horizontal-figures">
+          <figure>
+            <img src="asset/img/LoRA_GSM8K_bs4_lr_sweep.png" alt="MT-BENCH" />
+          </figure>
+          <figure>
+            <img src="asset/img/LoRA_GSM8K_bs8_lr_sweep.png" alt="MBPP" />
+          </figure>
+          <figure>
+            <img src="asset/img/LoRA_GSM8K_bs16_lr_sweep.png" alt="MATH" />
+          </figure>
+          <figure>
+            <img src="asset/img/LoRA_GSM8K_bs64_lr_sweep.png" alt="HUMANEVAL" />
+          </figure>
+          <figure>
+            <img src="asset/img/LoRA_GSM8K_bs128_lr_sweep.png" alt="GSM8K" />
+          </figure>
+
+
+          <h3></h3>
+          <figure class="horizontal-figure-wrapper">
+            <div class="horizontal-figures">
+              <figure>
+                <img src="asset/img/Best_Accuracy_HumanEval_lr2e-5.png" alt="MT-BENCH" />
+              </figure>
+              <figure>
+                <img src="asset/img/Best_Accuracy_MBPP_lr2e-5.png" alt="MBPP" />
+              </figure>
+            </div>
+            <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+              Figure 5. Accuracy comparison across five tasks after one-epoch fine-tuning.
+            </figcaption>
+          </figure>
+
+          <!-- reference -->
+    </main>
   </div>
   <hr style="border: none; border-top: 1px solid #ccc; margin: 3rem 0;" />
 
-<!-- Additional Sections like References -->
-<h2 id="references">References</h2>
-<ol>
-  <li id="ref1">Hu, E. J., et al. (2022). <i>LoRA: Low-rank adaptation of large language models.</i> ICLR.</li>
-  <li id="ref2">Meng, F., et al. (2024). <i>PiSSA: Principal singular values and singular vectors adaptation of large language models.</i> NeurIPS.</li>
-  <li id="ref3">Wang, H., et al. (2024). <i>MiLoRA: Harnessing minor singular components for parameter-efficient LLM finetuning.</i> arXiv:2406.09044.</li>
-  <li id="ref4">Keskar, N. S., et al. (2016). <i>On large-batch training for deep learning: Generalization gap and sharp minima.</i> arXiv:1609.04836. </li>
-  <li id="ref5">Goyal, P., et al. (2017). <i>Accurate, large minibatch SGD: Training ImageNet in 1 hour.</i> arXiv:1706.02677. </li>
-  <li id="ref6">Shallue, C. J., et al. (2019). <i>Measuring the effects of data parallelism on neural network training.</i> JMLR. </li>
-  <li id="ref7">Zhang, H., et al. (2024). <i>How Does Critical Batch Size Scale in Pre-training?</i> OPT 2024. </li>
-  <li id="ref8">Xiao, X., et al. (2024). <i>CoRA: Optimizing Low-Rank Adaptation with Common Subspace of Large Language Models.</i> arXiv:2409.02119. </li>
-  <li id="ref9">Hayou, S., et al. (2024). <i>LoRA+: Efficient Low Rank Adaptation of Large Models.</i> ICML. </li>
-  <li id="ref10">Guo, H., et al. (2023). <i>LQ-LoRA: Low-rank plus Quantized Matrix Decomposition for Efficient Language Model Finetuning.</i> ICLR 2024. </li>
-  <li id="ref11">Dettmers, T., et al. (2023). <i>QLoRA: Efficient finetuning of quantized LLMs.</i> NeurIPS. </li>
-  <li id="ref12">Kalajdzievski, D. (2023). <i>A rank stabilization scaling factor for fine-tuning with LoRA.</i> arXiv:2312.03732. </li>
-  <li id="ref13">Biderman, D., et al. (2024). <i>LoRA Learns Less and Forgets Less.</i> arXiv:2405.09673. </li>
-</ol>
+  <!-- Additional Sections like References -->
+  <h2 id="references">References</h2>
+  <ol>
+    <li id="ref1">Hu, E. J., et al. (2022). <i>LoRA: Low-rank adaptation of large language models.</i> ICLR.</li>
+    <li id="ref2">Meng, F., et al. (2024). <i>PiSSA: Principal singular values and singular vectors adaptation of large
+        language models.</i> NeurIPS.</li>
+    <li id="ref3">Wang, H., et al. (2024). <i>MiLoRA: Harnessing minor singular components for parameter-efficient LLM
+        finetuning.</i> arXiv:2406.09044.</li>
+    <li id="ref4">Keskar, N. S., et al. (2016). <i>On large-batch training for deep learning: Generalization gap and
+        sharp minima.</i> arXiv:1609.04836. </li>
+    <li id="ref5">Goyal, P., et al. (2017). <i>Accurate, large minibatch SGD: Training ImageNet in 1 hour.</i>
+      arXiv:1706.02677. </li>
+    <li id="ref6">Shallue, C. J., et al. (2019). <i>Measuring the effects of data parallelism on neural network
+        training.</i> JMLR. </li>
+    <li id="ref7">Zhang, H., et al. (2024). <i>How Does Critical Batch Size Scale in Pre-training?</i> OPT 2024. </li>
+    <li id="ref8">Xiao, X., et al. (2024). <i>CoRA: Optimizing Low-Rank Adaptation with Common Subspace of Large
+        Language Models.</i> arXiv:2409.02119. </li>
+    <li id="ref9">Hayou, S., et al. (2024). <i>LoRA+: Efficient Low Rank Adaptation of Large Models.</i> ICML. </li>
+    <li id="ref10">Guo, H., et al. (2023). <i>LQ-LoRA: Low-rank plus Quantized Matrix Decomposition for Efficient
+        Language Model Finetuning.</i> ICLR 2024. </li>
+    <li id="ref11">Dettmers, T., et al. (2023). <i>QLoRA: Efficient finetuning of quantized LLMs.</i> NeurIPS. </li>
+    <li id="ref12">Kalajdzievski, D. (2023). <i>A rank stabilization scaling factor for fine-tuning with LoRA.</i>
+      arXiv:2312.03732. </li>
+    <li id="ref13">Biderman, D., et al. (2024). <i>LoRA Learns Less and Forgets Less.</i> arXiv:2405.09673. </li>
+  </ol>
 
 </body>
+
 </html>
