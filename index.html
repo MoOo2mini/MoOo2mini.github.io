@@ -511,7 +511,7 @@
           model behavior, independent of learning rate tuning.</strong>
       </p>
 
-      <h3>Impact of Learning Rate at Fixed Batch Sizes</h3>
+    <h3>Impact of Learning Rate at Fixed Batch Sizes</h3>
       <figure class="horizontal-figure-wrapper">
         <div class="horizontal-figures">
           <figure>
@@ -530,10 +530,24 @@
             <img src="asset/img/LoRA_GSM8K_bs128_lr_sweep.png" alt="GSM8K" />
           </figure>
         </div>
-          <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-              Figure 5. Accuracy comparison across five tasks after one-epoch fine-tuning.
-            </figcaption>
-          </figure>
+        <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+          Figure 4. Test accuracy on GSM8K under Lora fine-tuning as a function of learning rate at batch sizes
+          4,8,16,64, and 128. We show pronounced intra-batch accuracy variability, underscoring the critical influence
+          of learning rate choice.
+        </figcaption>
+      </figure>
+      <p>
+        Figure 4 shows GSM8K test accuracy as a function of learning rate during LoRA fine-tuning, with separate curves
+        for batch sizes 4, 8, 16, 64, and 128. The results indicate that accuracy is highly sensitive to the learning
+        rate even when the batch size is fixed. For example, at batch size 4, accuracy reaches roughly 60 % at a
+        mid-range learning rate but drops to 0–33 % at the lowest and highest rates. A similar peak-and-drop pattern is
+        observed for batch sizes 8 and 16, where optimal learning rates yield approximately 55–60 % accuracy, compared
+        with values closer to 20 % or lower at suboptimal settings. Larger batch sizes, such as 64 and 128, also exhibit
+        broad fluctuations, with batch size 64 peaking in the low-60 % range and batch size 128 reaching a maximum in
+        the high-50 % range, yet both degrade sharply when the learning rate is poorly tuned. Although the optimal
+        learning rate shifts with batch size, the overarching observation is that GSM8K accuracy can vary by tens of
+        percentage points within any single batch size solely as a consequence of learning-rate selection.
+      </p>
 
           <h3>Performance Comparison on HumanEval and MBPP</h3>
           <figure class="horizontal-figure-wrapper">
