@@ -148,6 +148,39 @@
     .author-grid > div {
       flex: 1;
     }
+
+    .horizontal-figures {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 1rem 0;
+      gap: 1rem;
+      scroll-behavior: smooth;
+    }
+    .horizontal-figures figure {
+      flex: 0 0 auto; 
+      display: inline-block;
+      vertical-align: bottom;
+      margin: 0;
+      text-align: center;
+      white-space: normal;
+    }
+    .horizontal-figures img {
+      max-height: 260px;
+      width: auto;
+      border: 1px solid #eee;
+      background: #fff;
+      display: block;
+      margin: 0 auto;
+    }
+    .horizontal-figures figcaption {
+      font-size: 0.92rem;
+      color: #666;
+      margin-top: 0.4em;
+      max-width: 180px;
+    }
   </style>
 </head>
 <body>
@@ -189,6 +222,7 @@
         <li><a href="#background">Background</a></li>
         <li><a href="#the-role-of-batch-size-in-lora-training">The Role of Batch Size in LoRA Training</a></li>
         <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#appendix">Appendix</a></li>
       </ul>
     </nav>
 
@@ -333,6 +367,42 @@ Finding the optimal batch size is key to balancing the trade-off between computa
 </p>
 <p>Finally, the unexpected fluctuations in performance across batch sizes suggest subtle dynamics in optimization, which requires further theoretical investigation and large-scale empirical validation. We hope this work encourages the community to revisit current evaluation practices and adopt more rigorous, configuration-aware comparisons when assessing PEFT techniques.
 </p>
+
+<h2 id="appendix">Appendix</h2>
+<h3>Impact of Batch Size on Accuracy in PEFT Methods</h3>
+
+<figure class="horizontal-figure-wrapper">
+    <div class="horizontal-figures">
+      <figure>
+        <img src="asset/img/ALL_MT-Bench_1epoch_LARGE.png" alt="MT-BENCH" />
+      </figure>
+      <figure>
+        <img src="asset/img/ALL_MBPP_1epoch_LARGE.png" alt="MBPP" />
+      </figure>
+      <figure>
+        <img src="asset/img/ALL_MATH_1epoch_LARGE.png" alt="MATH" />
+      </figure>
+      <figure>
+        <img src="asset/img/ALL_HumanEval_1epoch_LARGE.png" alt="HUMANEVAL" />
+      </figure>
+      <figure>
+        <img src="asset/img/ALL_GSM8K_1epoch_LARGE.png" alt="GSM8K" />
+      </figure>
+    </div>
+  <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+  Figure 3. Accuracy comparison across five tasks after one-epoch fine-tuning.
+  </figcaption>
+</figure>
+<p>
+  The batch-size sweep curves for all five tasks show clear accuracy variations across batch settings, even after we fixed the best learning rate for each case. 
+</p>
+<p>
+For example, MiLoRA’s GSM8K and MATH plots exhibit very large swings in peak accuracy as batch size changes, whereas PiSSA and LoRA curves fluctuate more mildly. MBPP and MT-Bench also exhibit noticeable sensitivity to batch size, while HumanEval’s accuracy curve appears broadly irregular with no consistent trend.
+</p>
+<p>
+Importantly, these differences arise with only one epoch of training, so the fact that accuracy can change by several percentage points suggests batch size itself is exerting a strong effect on model performance. In sum, the magnitude of the observed accuracy shifts supports the claim that <strong>batch size significantly impacts model behavior, independent of learning rate tuning.</strong>
+</p>
+
 <!-- reference -->
 </main>
   </div>
