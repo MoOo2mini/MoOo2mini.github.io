@@ -186,6 +186,30 @@
       margin-top: 0.4em;
       max-width: 180px;
     }
+
+    .scroll-hint-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .scroll-hint {
+      font-size: 1.5rem;
+      color: #aaa;
+      padding: 0 0.5rem;
+      user-select: none;
+    }
+
+    .scroll-hint.left {
+      position: absolute;
+      left: -3rem;
+    }
+
+    .scroll-hint.right {
+      position: absolute;
+      right: -3rem;
+    }
+
   </style>
 </head>
 
@@ -475,6 +499,8 @@
       <h3>Impact of Batch Size on Accuracy in PEFT Methods</h3>
 
       <figure class="horizontal-figure-wrapper">
+        <div class="scroll-hint-wrapper">
+        <span class="scroll-hint left">&#8592;</span>
         <div class="horizontal-figures">
           <figure>
             <img src="asset/img/ALL_MT-Bench_1epoch_LARGE.png" alt="MT-BENCH" />
@@ -491,6 +517,9 @@
           <figure>
             <img src="asset/img/ALL_GSM8K_1epoch_LARGE.png" alt="GSM8K" />
           </figure>
+        </div>
+
+        <span class="scroll-hint right">&#8594;</span>
         </div>
         <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
           Figure 3. Accuracy comparison across five tasks after one-epoch fine-tuning.
@@ -514,22 +543,26 @@
 
     <h3>Impact of Learning Rate at Fixed Batch Sizes</h3>
       <figure class="horizontal-figure-wrapper">
-        <div class="horizontal-figures">
-          <figure>
-            <img src="asset/img/LoRA_GSM8K_bs4_lr_sweep.png" alt="MT-BENCH" />
-          </figure>
-          <figure>
-            <img src="asset/img/LoRA_GSM8K_bs8_lr_sweep.png" alt="MBPP" />
-          </figure>
-          <figure>
-            <img src="asset/img/LoRA_GSM8K_bs16_lr_sweep.png" alt="MATH" />
-          </figure>
-          <figure>
-            <img src="asset/img/LoRA_GSM8K_bs64_lr_sweep.png" alt="HUMANEVAL" />
-          </figure>
-          <figure>
-            <img src="asset/img/LoRA_GSM8K_bs128_lr_sweep.png" alt="GSM8K" />
-          </figure>
+        <div class="scroll-hint-wrapper">
+        <span class="scroll-hint left">&#8592;</span>
+          <div class="horizontal-figures">
+            <figure>
+              <img src="asset/img/LoRA_GSM8K_bs4_lr_sweep.png" alt="MT-BENCH" />
+            </figure>
+            <figure>
+              <img src="asset/img/LoRA_GSM8K_bs8_lr_sweep.png" alt="MBPP" />
+            </figure>
+            <figure>
+              <img src="asset/img/LoRA_GSM8K_bs16_lr_sweep.png" alt="MATH" />
+            </figure>
+            <figure>
+              <img src="asset/img/LoRA_GSM8K_bs64_lr_sweep.png" alt="HUMANEVAL" />
+            </figure>
+            <figure>
+              <img src="asset/img/LoRA_GSM8K_bs128_lr_sweep.png" alt="GSM8K" />
+            </figure>
+          </div>
+        <span class="scroll-hint right">&#8594;</span>
         </div>
         <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
           Figure 4. Test accuracy on GSM8K under Lora fine-tuning as a function of learning rate at batch sizes
