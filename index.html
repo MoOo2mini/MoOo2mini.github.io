@@ -261,7 +261,7 @@
       <h2 id="introduction">Introduction</h2>
 
       <p><strong>Low-Rank Adaptation (LoRA)</strong> <a href="#ref1">[1]</a> has emerged as a widely adopted technique
-        for efficiently fine-tuning large language models (LLMs). By injecting lightweight, trainable low-rank matrices
+        for efficiently fine-tuning large language models (LLMs). By injecting trainable low-rank matrices
         into pretrained weights, LoRA offers a practical solution for adapting massive models without the full cost of
         end-to-end training. Despite its growing popularity, its sensitivity to training hyperparameters, especially
         <strong>batch size</strong>, remains underexplored. This presents a challenge in real-world scenarios, where
@@ -269,8 +269,8 @@
         without exhaustive tuning.
       </p>
 
-      <p>Complicating matters further, recent LoRA variants such as PiSSA <a href="#ref2"><a href="#ref2">[2]</a></a>
-        and MiLoRA <a href="#ref3">[3]</a> propose seemingly contradictory initialization strategies (principal vs.
+      <p>Moreover, recent LoRA variants [<a href="#ref2">2</a></a>
+        , <a href="#ref3">3</a>] propose seemingly contradictory initialization strategies (principal vs.
         minor singular components), yet each work reports gain based on different experimental setups. This lack of
         consistency makes it difficult to discern whether observed improvements stem from algorithmic advances or simply
         from favorable training configurations. As a result, best practices remain unclear, and the actual influence of
@@ -451,10 +451,7 @@
         is properly configured, vanilla LoRA matches or even outperforms other complex methods.
       </p>
 
-      <p>This suggests that the performance gap previously attributed to architectural improvements may, in part, stem
-        from suboptimal training configurations. Our findings highlight that standard LoRA, without any structural
-        changes, remains a strong baseline, so long as traditional hyperparameters like batch size and learning rate are
-        carefully tuned.
+      <p>These results suggest that performance gains previously attributed to improvements in initialization may, in part, stem from suboptimal training configurations. Our findings highlight that standard LoRA remains a competitive baseline, so long as traditional hyperparameters like batch size and learning rate are carefully tuned. For additional results across different batch size setups, see Figure 3 in our Appendix.
       </p>
       </p>
 
@@ -468,8 +465,8 @@
         </figcaption>
       </figure>
       <p>To better understand the overall impact of batch size, we extend our analysis by evaluating LoRA across a
-        broader range, from small to extremely large batch sizes (up to 512). Surprisingly, we observe a non-monotonic
-        trend in test accuracy while increasing the batch size: performance initially drops, then rises unexpectedly at
+        broader range, from small to extremely large batch sizes (up to 512). Surprisingly, we observe <strong>a non-monotonic
+        trend in test accuracy while increasing the batch size</strong>: performance initially drops, then rises unexpectedly at
         intermediate batch sizes. before degrading again at the largest setting.</p>
       <p>This unpredictable behavior makes it challenging to select the batch size that balances training efficiency and
         generalization performance. While they show poor performance in the very large batch, our findings suggest that
@@ -561,27 +558,20 @@
         <span class="scroll-hint right">&#8594;</span>
         </div>
         <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-          Figure 4. Test accuracy on GSM8K under Lora fine-tuning as a function of learning rate at batch sizes
+          Figure 4. Test accuracy on GSM8K under LoRA fine-tuning as a function of learning rate at batch sizes
           4,8,16,64, and 128. The results underscore the critical influence of learning rate choice.
         </figcaption>
       </figure>
-      <p>Accuracy versus learning rate for GSM8K fine-tuning at batch sizes 4, 8, 16, 64, and 128 (each curve representing one batch size). The GSM8K fine-tuning results demonstrate that model accuracy is highly sensitive to the learning rate when batch size is held constant. For example, at a fixed batch size of 4 (bs4), accuracy varies dramatically across the learning rate sweep – reaching approximately 35% at the optimal learning rate (mid-range) but dropping to around 15% at the lowest or highest learning rates. A similar pattern is observed for bs8 and bs16: each exhibits a clear peak (e.g., roughly 37–40% accuracy at their best learning rates) versus much lower accuracy (on the order of 20% or less) at suboptimal learning rates. Larger batch sizes such as bs64 and bs128 likewise show broad accuracy fluctuations, with each achieving a distinct maximum accuracy (around the low-30s% for bs64 and high-20s% for bs128 in the given sweep) and significantly lower performance at poorly tuned learning rates. These results indicate that peak performance and learning-rate sensitivity differ by batch size; however, the central observation is that within any fixed batch size, GSM8K accuracy can vary by a large margin solely due to changes in the learning rate.
+      <p>
+        Figure 4 presents GSM8K test accuracy as a function of learning rate across batch sizes 4, 8, 16, 64, and 128, with each curve representing one batch size. The results highlight a key trend: learning rate is a critical factor for performance, when tuning the batch size. For instance, at batch size 4, accuracy peaks around 60% at a mid-range learning rate but drops below 33% at both extremes. This sharp peak-and-fall pattern is consistent across batch sizes 8 and 16, with optimal accuracy near 55–60% and steep declines at suboptimal settings. Larger batch sizes, such as 64 and 128, follow a similar trajectory—reaching their own performance peaks (low-60% and high-50%, respectively) but showing considerable degradation when the learning rate is poorly tuned.
       </p>
 
       <p>
-        Figure 4 shows GSM8K test accuracy as a function of learning rate during LoRA fine-tuning, with separate curves
-        for batch sizes 4, 8, 16, 64, and 128. The results indicate that accuracy is highly sensitive to the learning
-        rate even when the batch size is fixed. For example, at batch size 4, accuracy reaches roughly 60 % at a
-        mid-range learning rate but drops to 0-33 % at the lowest and highest rates. A similar peak-and-drop pattern is
-        observed for batch sizes 8 and 16, where optimal learning rates yield approximately 55–60 % accuracy, compared
-        with values closer to 20 % or lower at suboptimal settings. Larger batch sizes, such as 64 and 128, also exhibit
-        broad fluctuations, with batch size 64 peaking in the low-60 % range and batch size 128 reaching a maximum in
-        the high-50 % range, yet both degrade sharply when the learning rate is poorly tuned. Although the optimal
-        learning rate shifts with batch size, the overarching observation is that GSM8K accuracy can vary by tens of
-        percentage points within any single batch size solely as a consequence of learning-rate selection.
+      These results emphasize that batch size alone does not determine performance—the learning rate must be tuned jointly. To fairly compare the effect of batch size on training, it is essential to identify the optimal learning rate for each configuration.  
       </p>
 
-          <h3>Performance Comparison on HumanEval and MBPP</h3>
+          <h3>Additional Results Under PiSSA’s Configuration.
+          </h3>
           <figure class="horizontal-figure-wrapper">
             <div class="horizontal-figures">
               <figure>
@@ -592,10 +582,11 @@
               </figure>
             </div>
             <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
-              Figure 5.The following plots show the test accuracy of LoRA, MiLoRA, and PiSSA on HumanEval and MBPP benchmarks across varying batch sizes (lr = 2e-5).
+              Figure 5.The following plots show the test accuracy of LoRA, MiLoRA, and PiSSA on HumanEval and MBPP benchmarks across varying batch sizes with fixed learning rate.
             </figcaption>
           </figure>
-          <p>To support our motivation, we provide additional plots comparing LoRA, MiLoRA, and PiSSA on HumanEval and MBPP, further illustrating how batch size affects performance across different tasks.</p>
+          <p>To further support our motivation in Figure 1, we provide additional comparisons of LoRA, MiLoRA, and PiSSA on HumanEval and MBPP benchmarks. The results reveal that the relative effectiveness of each method varies depending on the batch size configuration.
+          </p>
           <!-- reference -->
     </main>
   </div>
