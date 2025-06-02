@@ -432,8 +432,8 @@
         each batch size, selecting from
         <span class="math">\( \{1e\text{-}3, 3e\text{-}4, 5e\text{-}5, 2e\text{-}5, 5e\text{-}6, 1e\text{-}6\}
           \)</span>,
-        based on commonly used ranges in recent PEFT literature. [<a href="#ref8">8</a>, <a href="#ref9"> 9</a>, <a
-          href="#ref10"> 10</a>, <a href="#ref11"> 11</a>].
+        based on commonly used ranges in recent PEFT literature [<a href="#ref8">8</a>, <a href="#ref9"> 9</a>, <a
+          href="#ref10"> 10</a>, <a href="#ref11"> 11</a>]. Further discussion on the necessity of jointly tuning batch size and learning rate can be found in Figure 4 of our Appendix.
       </p>
       <h3>Vanilla LoRA Achieves SOTA Only with The Optimal Batch Size Training.</h3>
       <figure style="text-align: center;">
@@ -451,7 +451,7 @@
         is properly configured, vanilla LoRA matches or even outperforms other complex methods.
       </p>
 
-      <p>These results suggest that performance gains previously attributed to improvements in initialization may, in part, stem from suboptimal training configurations. Our findings highlight that standard LoRA remains a competitive baseline, so long as traditional hyperparameters like batch size and learning rate are carefully tuned. For additional results across different batch size setups, see Figure 3 in our Appendix.
+      <p>These results suggest that performance gains previously attributed to improvements in initialization may, in part, stem from suboptimal training configurations. Our findings highlight that <strong>standard LoRA remains a competitive baseline</strong>, so long as traditional hyperparameters like batch size and learning rate are carefully tuned. For additional results across different batch size setups, see Figure 3 in our Appendix.
       </p>
       </p>
 
