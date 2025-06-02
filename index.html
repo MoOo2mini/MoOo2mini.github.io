@@ -280,11 +280,11 @@
 
       <p><strong>Our main contributions are as follows:</strong></p>
       <!-- <ul> -->
-      <ul>1. We show that batch size plays a critical role in LoRA fine-tuning, with up to 20% variation in test
+      <ul>1. We show that <strong>batch size plays a critical role in LoRA fine-tuning</strong>, with up to 20% variation in test
         accuracy depending on its setting.</ul>
-      <ul>2. We demonstrate that vanilla LoRA can match or even outperform recent variants, simply by tuning the batch
+      <ul>2. We demonstrate that <strong>LoRA can match or even outperform recent variants</strong>, simply by tuning the batch
         size appropriately.</ul>
-      <ul>3. We uncover oscillating trends in LoRA’s performance as batch size increases, underscoring the need for a
+      <ul>3. We uncover <strong>trends in LoRA’s performance as batch size increases</strong>, underscoring the need for a
         deeper understanding of its optimization behavior.</ul>
       <!-- </ul> -->
 
@@ -294,8 +294,8 @@
         <img src="asset/img/humaneval_1epoch_motif.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA"
           style="max-width: 100%; height: auto;" />
         <figcaption style="font-style: italic; margin-top: 8px;">
-          Figure 1. We show the HumanEval accuracy achieved by Llama-2-7B after one-epoch CodeFeedback fine-tuning with
-          two LoRA variants (PiSSA, MiLoRA). The large-batch setting favors PiSSA, but merely reducing batch size lets
+          Figure 1. We show the HumanEval accuracy achieved by Llama-2-7B after one-epoch fine-tuning with
+          two LoRA variants. The large-batch setting favors PiSSA, but merely reducing batch size lets
           MiLoRA surpass it, underscoring how sensitive LoRA comparisons are to seemingly minor choices such as batch
           size.
         </figcaption>
@@ -323,8 +323,8 @@
       </p>
 
       <p>
-        1. How does batch size affect the LoRA training dynamics?<br>
-        2. How can we choose a batch size that balances performance and efficiency?
+        1. <strong>How does batch size affect the LoRA training dynamics?</strong> <br>
+        2. <strong>How can we choose a batch size that balances performance and efficiency?</strong>
       </p>
 
       <p>
@@ -424,18 +424,18 @@
         To examine the impact of batch size, we evaluate LoRA and its variants across a range of values
         <span class="math">\( \{2^2, 2^3, 2^4, 2^5, 2^7\} \)</span>.
         The results of Figure 1 may be misleading, since the learning rate is a critical co-factor, especially when
-        batch size is modified. Therefore,
+        batch size is modified.
       </p>
 
       <p>
-        To understand the actual effect of batch size, we conduct a small grid search for the optimal learning rate for
+        Therefore, to understand the actual effect of batch size, we conduct a small grid search for the optimal learning rate for
         each batch size, selecting from
         <span class="math">\( \{1e\text{-}3, 3e\text{-}4, 5e\text{-}5, 2e\text{-}5, 5e\text{-}6, 1e\text{-}6\}
           \)</span>,
         based on commonly used ranges in recent PEFT literature. [<a href="#ref8">8</a>, <a href="#ref9"> 9</a>, <a
           href="#ref10"> 10</a>, <a href="#ref11"> 11</a>].
       </p>
-      <h3>Vanilla LoRA Achieves SOTA Performance Only with The Optimal Batch Size Training.</h3>
+      <h3>Vanilla LoRA Achieves SOTA Only with The Optimal Batch Size Training.</h3>
       <figure style="text-align: center;">
         <img src="asset/img/table1.png" alt="Figure 1: Test accuracy of PiSSA and MiLoRA"
           style="max-width: 100%; height: auto;" />
@@ -479,7 +479,7 @@
 
       <h2 id="conclusion">Conclusion</h2>
 
-      <p>In this study, we revisit the performance of LoRA and its recent variants using the LLaMA-2-7B model, with a
+      <p>In this study, we revisit the performance of LoRA and its recent variants, with a
         particular focus on the overlooked role of batch size. Our findings reveal two key insights:</p>
       <p><strong>First</strong>, when the batch size is properly tuned, vanilla LoRA can achieve performance on par
         with, or even better than, its variants, without requiring any structural modifications.
@@ -526,19 +526,15 @@
         </figcaption>
       </figure>
       <p>
-        The batch-size sweep curves for all five tasks show clear accuracy variations across batch settings, even after
-        we fixed the best learning rate for each case.
+        The batch-size sweep curves for all five tasks show clear accuracy variations across batch settings, along with the best learning rate for each case. 
       </p>
       <p>
-        For example, MiLoRA’s GSM8K and MATH plots exhibit very large swings in peak accuracy as batch size changes,
+        MiLoRA’s GSM8K and MATH plots exhibit very large swings in peak accuracy as batch size changes,
         whereas PiSSA and LoRA curves fluctuate more mildly. MBPP and MT-Bench also exhibit noticeable sensitivity to
         batch size, while HumanEval’s accuracy curve appears broadly irregular with no consistent trend.
       </p>
       <p>
-        Importantly, these differences arise with only one epoch of training, so the fact that accuracy can change by
-        several percentage points suggests batch size itself is exerting a strong effect on model performance. In sum,
-        the magnitude of the observed accuracy shifts supports the claim that <strong>batch size significantly impacts
-          model behavior, independent of learning rate tuning.</strong>
+      Importantly, these differences arise with one epoch of training, which claims that batch size significantly impacts model behavior, even with the optimal learning rate tuning. 
       </p>
 
     <h3>Impact of Learning Rate at Fixed Batch Sizes</h3>
@@ -566,15 +562,17 @@
         </div>
         <figcaption style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
           Figure 4. Test accuracy on GSM8K under Lora fine-tuning as a function of learning rate at batch sizes
-          4,8,16,64, and 128. We show pronounced intra-batch accuracy variability, underscoring the critical influence
-          of learning rate choice.
+          4,8,16,64, and 128. The results underscore the critical influence of learning rate choice.
         </figcaption>
       </figure>
+      <p>Accuracy versus learning rate for GSM8K fine-tuning at batch sizes 4, 8, 16, 64, and 128 (each curve representing one batch size). The GSM8K fine-tuning results demonstrate that model accuracy is highly sensitive to the learning rate when batch size is held constant. For example, at a fixed batch size of 4 (bs4), accuracy varies dramatically across the learning rate sweep – reaching approximately 35% at the optimal learning rate (mid-range) but dropping to around 15% at the lowest or highest learning rates. A similar pattern is observed for bs8 and bs16: each exhibits a clear peak (e.g., roughly 37–40% accuracy at their best learning rates) versus much lower accuracy (on the order of 20% or less) at suboptimal learning rates. Larger batch sizes such as bs64 and bs128 likewise show broad accuracy fluctuations, with each achieving a distinct maximum accuracy (around the low-30s% for bs64 and high-20s% for bs128 in the given sweep) and significantly lower performance at poorly tuned learning rates. These results indicate that peak performance and learning-rate sensitivity differ by batch size; however, the central observation is that within any fixed batch size, GSM8K accuracy can vary by a large margin solely due to changes in the learning rate.
+      </p>
+
       <p>
         Figure 4 shows GSM8K test accuracy as a function of learning rate during LoRA fine-tuning, with separate curves
         for batch sizes 4, 8, 16, 64, and 128. The results indicate that accuracy is highly sensitive to the learning
         rate even when the batch size is fixed. For example, at batch size 4, accuracy reaches roughly 60 % at a
-        mid-range learning rate but drops to 0–33 % at the lowest and highest rates. A similar peak-and-drop pattern is
+        mid-range learning rate but drops to 0-33 % at the lowest and highest rates. A similar peak-and-drop pattern is
         observed for batch sizes 8 and 16, where optimal learning rates yield approximately 55–60 % accuracy, compared
         with values closer to 20 % or lower at suboptimal settings. Larger batch sizes, such as 64 and 128, also exhibit
         broad fluctuations, with batch size 64 peaking in the low-60 % range and batch size 128 reaching a maximum in
