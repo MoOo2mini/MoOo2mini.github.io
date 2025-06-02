@@ -260,7 +260,7 @@
 
       <h2 id="introduction">Introduction</h2>
 
-      <p><strong>Low-Rank Adaptation (LoRA)</strong> <a href="#ref1">[1]</a> has emerged as a widely adopted technique
+      <p><strong>Low-Rank Adaptation (LoRA)</strong> [<a href="#ref1">1</a>] has emerged as a widely adopted technique
         for efficiently fine-tuning large language models (LLMs). By injecting trainable low-rank matrices
         into pretrained weights, LoRA offers a practical solution for adapting massive models without the full cost of
         end-to-end training. Despite its growing popularity, its sensitivity to training hyperparameters, especially
@@ -305,7 +305,7 @@
         We fine-tune
         <a href="https://huggingface.co/meta-llama/Llama-2-7b-hf">Llama-2-7B</a>
         using LoRA’s recent variants, PiSSA and MiLoRA, following the hyperparameter configuration proposed by Meng et
-        al. <a href="#ref2">[2]</a>.
+        al. [<a href="#ref2">2</a>].
         As shown in Figure 1, we evaluate their test accuracy on the HumanEval benchmark after a single epoch of
         training on the CodeFeedback dataset.
         While the original configuration favors PiSSA, we find that MiLoRA outperforms by simply reducing the batch
@@ -357,8 +357,8 @@
         descent for the data distribution, allowing the model to make more optimal progress with each step. However,
         larger batches often require proportionally higher learning rates to maintain step size. Moreover, very large
         batches, approaching full-batch gradient descent, are known to risk converging to sharper minima in the loss
-        landscape, which generalize poorly to unseen data. This phenomenon has been observed empirically by <a
-          href="#ref4">Keskar et al. [4]</a>, with significant performance drops up to a 5% lower test accuracy when
+        landscape, which generalize poorly to unseen data. This phenomenon has been observed empirically by Keskar et al. [<a
+          href="#ref4">4</a>], with significant performance drops up to a 5% lower test accuracy when
         using excessively large batches.
       </p>
 
@@ -379,11 +379,11 @@
         models. Its efficiency has led to a surge of LoRA variants, each proposing different ways to improve adaptation
         quality.</p>
 
-      <p><strong>PiSSA (Principal Singular Vector Adaptation)</strong> <a href="#ref2">[2]</a> initializes the LoRA
+      <p><strong>PiSSA (Principal Singular Vector Adaptation)</strong> [<a href="#ref2">2</a>] initializes the LoRA
         adapters using the principal components of the pretrained weight matrix, those directions with the highest
         variance, allowing the model to immediately fine-tune in the most informative subspace.</p>
 
-      <p>In contrast, <strong>MiLoRA (Minor LoRA)</strong> <a href="#ref3">[3]</a> leverages the minor singular
+      <p>In contrast, <strong>MiLoRA (Minor LoRA)</strong> [<a href="#ref3">3</a>] leverages the minor singular
         components, encouraging the LoRA updates to adapt in underutilized directions and thus preserving pretrained
         knowledge.</p>
 
@@ -563,11 +563,17 @@
         </figcaption>
       </figure>
       <p>
-        Figure 4 presents GSM8K test accuracy as a function of learning rate across batch sizes 4, 8, 16, 64, and 128, with each curve representing one batch size. The results highlight a key trend: learning rate is a critical factor for performance, when tuning the batch size. For instance, at batch size 4, accuracy peaks around 60% at a mid-range learning rate but drops below 33% at both extremes. This sharp peak-and-fall pattern is consistent across batch sizes 8 and 16, with optimal accuracy near 55–60% and steep declines at suboptimal settings. Larger batch sizes, such as 64 and 128, follow a similar trajectory—reaching their own performance peaks (low-60% and high-50%, respectively) but showing considerable degradation when the learning rate is poorly tuned.
+        Figure 4 presents GSM8K test accuracy as a function of learning rate across batch sizes 4, 8, 16, 64, and 128, with each curve representing one batch size. 
+        The results highlight a key trend: learning rate is a critical factor for performance, when tuning the batch size. 
+        For instance, at batch size 4, accuracy peaks around 60% at a mid-range learning rate but drops below 33% at both extremes. 
+        This sharp peak-and-fall pattern is consistent across batch sizes 8 and 16, with optimal accuracy near 55-60% and steep declines at suboptimal settings. 
+        Larger batch sizes, such as 64 and 128, follow a similar trajectory—reaching their own performance peaks (low-60% and high-50%, respectively) 
+        but showing considerable degradation when the learning rate is poorly tuned.
       </p>
 
       <p>
-      These results emphasize that batch size alone does not determine performance—the learning rate must be tuned jointly. To fairly compare the effect of batch size on training, it is essential to identify the optimal learning rate for each configuration.  
+      These results emphasize that batch size alone does not determine performance—the learning rate must be tuned jointly. 
+      To fairly compare the effect of batch size on training, it is essential to identify the optimal learning rate for each configuration.  
       </p>
 
           <h3>Additional Results Under PiSSA’s Configuration.
@@ -585,7 +591,8 @@
               Figure 5.The following plots show the test accuracy of LoRA, MiLoRA, and PiSSA on HumanEval and MBPP benchmarks across varying batch sizes with fixed learning rate.
             </figcaption>
           </figure>
-          <p>To further support our motivation in Figure 1, we provide additional comparisons of LoRA, MiLoRA, and PiSSA on HumanEval and MBPP benchmarks. The results reveal that the relative effectiveness of each method varies depending on the batch size configuration.
+          <p>To further support our motivation in Figure 1, we provide additional comparisons of LoRA, MiLoRA, and PiSSA on HumanEval and MBPP benchmarks. 
+            The results reveal that the relative effectiveness of each method varies depending on the batch size configuration.
           </p>
           <!-- reference -->
     </main>
