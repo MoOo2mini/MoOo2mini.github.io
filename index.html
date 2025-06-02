@@ -364,8 +364,8 @@
 
       <p>
         Finding the optimal batch size is key to balancing the trade-off between computational efficiency and
-        generalization. This has prompted extensive research <a href="#ref5">[5]</a>, <a href="#ref6">[6]</a>, <a
-          href="#ref7">[7]</a> within the particularly regarding the scaling of batch sizes and their effects on
+        generalization. This has prompted extensive research [<a href="#ref5">5</a>, <a href="#ref6">6</a>, <a
+          href="#ref7">7</a>] within the particularly regarding the scaling of batch sizes and their effects on
         training dynamics. A critical element of this research is the concept of <strong>Critical Batch Size
           (CBS)</strong>, defined as the batch size beyond which increasing it no longer significantly reduces the
         number of training steps. This area of study is critical because choosing the appropriate batch size can
@@ -397,7 +397,7 @@
         limited training steps or memory budget.
       </p>
 
-      <p>While prior studies <a href="#ref12">[12]</a><a href="#ref13">[13]</a> have explored the effect of some other
+      <p>While prior studies [<a href="#ref12">12</a>,<a href="#ref13">13</a>] have explored the effect of some other
         parameters(e.g. rank, scaling factor), <strong>the role of batch size in LoRA-based training remains largely
           under-investigated</strong>. In this post, we aim to fill that gap by providing a systematic analysis of how
         batch size impacts the performance and behavior of LoRA and its recent variants.</p>
@@ -432,8 +432,8 @@
         each batch size, selecting from
         <span class="math">\( \{1e\text{-}3, 3e\text{-}4, 5e\text{-}5, 2e\text{-}5, 5e\text{-}6, 1e\text{-}6\}
           \)</span>,
-        based on commonly used ranges in recent PEFT literature. <a href="#ref8">[8]</a>, <a href="#ref9">[9]</a>, <a
-          href="#ref10">[10]</a>, <a href="#ref11">[11]</a>.
+        based on commonly used ranges in recent PEFT literature. [<a href="#ref8">8</a>, <a href="#ref9">9</a>, <a
+          href="#ref10">10</a>, <a href="#ref11">11</a>].
       </p>
       <h3>Vanilla LoRA Achieves SOTA Performance Only with The Optimal Batch Size Training.</h3>
       <figure style="text-align: center;">
