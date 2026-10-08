@@ -4,7 +4,9 @@ layout: homepage
 
 ## About Me
 
-I am a Ph.D. student at ...
+I am an M.S. student at the Efficient Learning Lab (EffL), POSTECH, advised by Prof. Jaeho Lee. I received my B.S. degree from Soongsil University.
+
+My research interests include diffusion transformers, multimodal generative models, and representation learning. In particular, I am interested in understanding and improving the representations learned by diffusion models.
 
 ## Research Interests
 
