@@ -6,12 +6,11 @@ layout: homepage
 
 I am an M.S. student at the Efficient Learning Lab (EffL), POSTECH, advised by Prof. Jaeho Lee. I received my B.S. degree from Soongsil University.
 
-My research interests include diffusion transformers, multimodal generative models, and representation learning. In particular, I am interested in understanding and improving the representations learned by diffusion models.
-
 ## Research Interests
 
-- **Computer Vision:** image recognition, image generation, video captioning
-- **Machine Learning:** meta-learning, incremental learning, transfer learning
+- **Diffusion Transformers:** Understanding and improving the representations learned by diffusion models
+- **Multimodal Generative Models:** Learning and aligning representations across multiple modalities
+- **Representation Learning:** Developing robust and transferable representations for generative modeling
 
 ## News
 
