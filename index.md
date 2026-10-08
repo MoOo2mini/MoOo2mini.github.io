@@ -8,9 +8,9 @@ I am an M.S. student at the Efficient Learning Lab (EffL), POSTECH, advised by P
 
 ## Research Interests
 
-- **Diffusion Transformers:** Understanding and improving the representations learned by diffusion models
-- **Multimodal Generative Models:** Learning and aligning representations across multiple modalities
-- **Representation Learning:** Developing robust and transferable representations for generative modeling
+- Mechanistic Understanding of Diffusion Models
+- High-Fidelity and Controllable Image Generation
+- Multimodal Representation Learning
 
 ## News
 
