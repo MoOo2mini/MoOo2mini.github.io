@@ -4,7 +4,7 @@ layout: homepage
 
 ## About Me
 
-I am an M.S. student at the Efficient Learning Lab (EffL), POSTECH, advised by Prof. Jaeho Lee. I received my B.S. degree from Soongsil University.
+I am an M.S. student at the Efficient Learning Lab (EffL), POSTECH, advised by Prof. Jaeho Lee. I received my B.S. degree in Computer Science and Engineering from Soongsil University.
 
 ## Research Interests
 
