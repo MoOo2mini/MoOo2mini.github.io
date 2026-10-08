@@ -14,10 +14,7 @@ I am an M.S. student at the Efficient Learning Lab (EffL), POSTECH, advised by P
 
 ## News
 
-- **[Feb. 2020]** Our paper about incremental learning is accepted to CVPR 2020.
-- **[Feb. 2020]** We will host the ACM Multimedia Asia 2020 conference in Singapore!
-- **[Sept. 2019]** Our paper about few-shot learning is accepted to NeurIPS 2019.
-- **[Mar. 2019]** Our paper about few-shot learning is accepted to CVPR 2019.
+- **[Jun. 2026]** Our paper, [**Multi-frame Restoration for 10 Hz Lissajous Confocal Laser Endomicroscopy**](https://papers.miccai.org/miccai-2026/paper/4278_paper.pdf), was accepted to MICCAI 2026.
 
 {% include_relative _includes/publications.md %}
 
